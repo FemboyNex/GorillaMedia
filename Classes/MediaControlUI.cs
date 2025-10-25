@@ -125,7 +125,7 @@ namespace GorillaMedia
                && Vector3.Angle(GorillaTagger.Instance.headCollider.transform.forward, (TrueLeftHand().position - GorillaTagger.Instance.headCollider.transform.position).normalized) < 30f
                && (Vector3.Dot(
                     GorillaTagger.Instance.headCollider.transform.forward.normalized,
-                   -GorillaTagger.Instance.offlineVRRig.leftHandTransform.right.normalized
+                   -GorillaTagger.Instance.offlineVRRig.rightHandTransform.right.normalized
                   ) > 0.7f);
 
             transform.localScale = Vector3.Lerp(transform.localScale, shouldGrow ? uiScale : Vector3.zero, Time.deltaTime * 15f);
@@ -152,8 +152,8 @@ namespace GorillaMedia
 
         public static (Vector3 position, Quaternion rotation, Vector3 up, Vector3 forward, Vector3 right) TrueLeftHand()
         {
-            Quaternion rot = GorillaTagger.Instance.leftHandTransform.rotation * GorillaLocomotion.GTPlayer.Instance.leftHandRotOffset;
-            return (GorillaTagger.Instance.leftHandTransform.position + GorillaTagger.Instance.leftHandTransform.rotation * GorillaLocomotion.GTPlayer.Instance.leftHandOffset, rot, rot * Vector3.up, rot * Vector3.forward, rot * Vector3.right);
+            Quaternion rot = GorillaTagger.Instance.rightHandTransform.rotation * GorillaLocomotion.GTPlayer.Instance.rightHandRotOffset;
+            return (GorillaTagger.Instance.rightHandTransform.position + GorillaTagger.Instance.rightHandTransform.rotation * GorillaLocomotion.GTPlayer.Instance.rightHandOffset, rot, rot * Vector3.up, rot * Vector3.forward, rot * Vector3.right);
         }
 
         public class MediaControlButton : MonoBehaviour
@@ -178,7 +178,7 @@ namespace GorillaMedia
                 bool shouldGrow = Vector3.Distance(GorillaTagger.Instance.headCollider.transform.position, TrueLeftHand().position) < 0.7f
                                   && Vector3.Angle(GorillaTagger.Instance.headCollider.transform.forward, (TrueLeftHand().position - GorillaTagger.Instance.headCollider.transform.position).normalized) < 30f;
 
-                if (shouldGrow && Time.time > buttonDelay && collider.name == "RightHandTriggerCollider")
+                if (shouldGrow && Time.time > buttonDelay && collider.name == "LeftHandTriggerCollider")
                 {
                     buttonDelay = Time.time + 0.2f;
 
@@ -186,7 +186,7 @@ namespace GorillaMedia
                         GorillaTagger.Instance.tagHapticStrength / 2f, 
                         GorillaTagger.Instance.tagHapticDuration / 2f);
 
-                    AudioSource audioSource = GorillaTagger.Instance.offlineVRRig.rightHandPlayer;
+                    AudioSource audioSource = GorillaTagger.Instance.offlineVRRig.leftHandPlayer;
                     audioSource.volume = 0.3f;
                     audioSource.PlayOneShot(instance.clickSound);
 
